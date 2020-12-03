@@ -1,0 +1,23 @@
+{
+	"name": "DestinationDataset_nnc",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "UserDS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "processor_user1data1",
+				"container": "dataprocessor"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
