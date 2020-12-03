@@ -4,7 +4,7 @@
 		"description": "LAB 00",
 		"activities": [
 			{
-				"name": "Copy_nnc",
+				"name": "cp_user_to_process",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
