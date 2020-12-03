@@ -55,7 +55,10 @@
 				"outputs": [
 					{
 						"referenceName": "DestinationDataset_nnc",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"user_filename": "proccesor_userdata1"
+						}
 					}
 				]
 			}
