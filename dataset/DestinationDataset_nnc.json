@@ -5,13 +5,19 @@
 			"referenceName": "UserDS",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"user_filename": {
+				"type": "String",
+				"defaultValue": "proccesor_userdata1"
+			}
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
-					"value": "processor_user1data1_@utcnow().csv",
+					"value": "{@dataset().user_filename}{@utcnow()}.csv",
 					"type": "Expression"
 				},
 				"container": "dataprocessor"
