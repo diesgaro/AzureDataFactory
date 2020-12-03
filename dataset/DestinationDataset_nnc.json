@@ -16,10 +16,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": {
-					"value": "@utcnow()",
-					"type": "Expression"
-				},
+				"fileName": "processor_user_data1",
 				"container": "dataprocessor"
 			},
 			"columnDelimiter": ",",
