@@ -10,7 +10,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "processor_user1data1.csv",
+				"fileName": {
+					"value": "processor_user1data1_@utcnow().csv",
+					"type": "Expression"
+				},
 				"container": "dataprocessor"
 			},
 			"columnDelimiter": ",",
