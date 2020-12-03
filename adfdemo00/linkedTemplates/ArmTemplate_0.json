@@ -39,12 +39,21 @@
 					"referenceName": "UserDS",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"user_filename": {
+						"type": "String",
+						"defaultValue": "proccesor_userdata1"
+					}
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "processor_user1data1.csv",
+						"fileName": {
+							"value": "@utcnow()",
+							"type": "Expression"
+						},
 						"container": "dataprocessor"
 					},
 					"columnDelimiter": ",",
@@ -144,7 +153,7 @@
 				"description": "LAB 00",
 				"activities": [
 					{
-						"name": "Copy_nnc",
+						"name": "cp_user_to_process",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -197,7 +206,9 @@
 							{
 								"referenceName": "DestinationDataset_nnc",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"user_filename": "proccesor_userdata1"
+								}
 							}
 						]
 					}
