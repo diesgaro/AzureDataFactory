@@ -8,6 +8,9 @@
 		"UserDS_connectionString": {
 			"value": ""
 		},
+		"OpenApiLS_properties_typeProperties_url": {
+			"value": "https://swapi.dev/api/"
+		},
 		"containerUri": {
 			"value": ""
 		},

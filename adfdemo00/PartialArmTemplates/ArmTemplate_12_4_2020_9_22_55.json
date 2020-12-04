@@ -6,14 +6,6 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "adfdemo00"
-		},
-		"UserDS_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'UserDS'"
-		},
-		"OpenApiLS_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://swapi.dev/api/"
 		}
 	},
 	"variables": {
@@ -73,8 +65,7 @@
 						"inputs": [
 							{
 								"referenceName": "SourceDataset_nnc",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
@@ -92,135 +83,6 @@
 					"name": "LAB_00"
 				},
 				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/SourceDataset_nnc')]",
-				"[concat(variables('factoryId'), '/datasets/DestinationDataset_nnc')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DestinationDataset_nnc')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "UserDS",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"user_filename": {
-						"type": "String",
-						"defaultValue": "proccesor_userdata1"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "processor_user_data1",
-						"container": "dataprocessor"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/UserDS')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SourceDataset_nnc')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "UserDS",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "userdata1.parquet",
-						"container": "data"
-					},
-					"compressionCodec": "snappy"
-				},
-				"schema": [
-					{
-						"name": "registration_dttm",
-						"type": "INT96"
-					},
-					{
-						"name": "id",
-						"type": "INT32"
-					},
-					{
-						"name": "first_name",
-						"type": "UTF8"
-					},
-					{
-						"name": "last_name",
-						"type": "UTF8"
-					},
-					{
-						"name": "email",
-						"type": "UTF8"
-					},
-					{
-						"name": "gender",
-						"type": "UTF8"
-					},
-					{
-						"name": "ip_address",
-						"type": "UTF8"
-					},
-					{
-						"name": "cc",
-						"type": "UTF8"
-					},
-					{
-						"name": "country",
-						"type": "UTF8"
-					},
-					{
-						"name": "birthdate",
-						"type": "UTF8"
-					},
-					{
-						"name": "salary",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "title",
-						"type": "UTF8"
-					},
-					{
-						"name": "comments",
-						"type": "UTF8"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/UserDS')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/UserDS')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Users dataset",
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('UserDS_connectionString')]"
-				}
 			},
 			"dependsOn": []
 		},
@@ -267,15 +129,13 @@
 						"inputs": [
 							{
 								"referenceName": "OpenApiDS",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
 							{
 								"referenceName": "swapi_ships_DS",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					}
@@ -298,7 +158,7 @@
 				"annotations": [],
 				"type": "HttpServer",
 				"typeProperties": {
-					"url": "[parameters('OpenApiLS_properties_typeProperties_url')]",
+					"url": "https://swapi.dev/api/",
 					"enableServerCertificateValidation": true,
 					"authenticationType": "Anonymous"
 				}
@@ -349,9 +209,7 @@
 				},
 				"schema": {}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/UserDS')]"
-			]
+			"dependsOn": []
 		}
 	]
 }

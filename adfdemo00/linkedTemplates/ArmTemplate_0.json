@@ -10,6 +10,10 @@
 		"UserDS_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'UserDS'"
+		},
+		"OpenApiLS_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://swapi.dev/api/"
 		}
 	},
 	"variables": {
@@ -26,6 +30,21 @@
 				"type": "AzureBlobStorage",
 				"typeProperties": {
 					"connectionString": "[parameters('UserDS_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/OpenApiLS')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "HttpServer",
+				"typeProperties": {
+					"url": "[parameters('OpenApiLS_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
 				}
 			},
 			"dependsOn": []
@@ -143,6 +162,54 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/OpenApiDS')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "OpenApiLS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "HttpServerLocation",
+						"relativeUrl": "starships"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/OpenApiLS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/swapi_ships_DS')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "UserDS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "swapi_ships.json",
+						"folderPath": "api_files",
+						"container": "data"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/UserDS')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/copy_users_00')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -218,6 +285,72 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SourceDataset_nnc')]",
 				"[concat(variables('factoryId'), '/datasets/DestinationDataset_nnc')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/copy_api_00')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "cp_data_api",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "OpenApiDS",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "swapi_ships_DS",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "LAB_00"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/OpenApiDS')]",
+				"[concat(variables('factoryId'), '/datasets/swapi_ships_DS')]"
 			]
 		}
 	]

@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'UserDS'"
 		},
+		"OpenApiLS_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://swapi.dev/api/"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -40,6 +44,9 @@
 					},
 					"UserDS_connectionString": {
 						"value": "[parameters('UserDS_connectionString')]"
+					},
+					"OpenApiLS_properties_typeProperties_url": {
+						"value": "[parameters('OpenApiLS_properties_typeProperties_url')]"
 					}
 				}
 			},
