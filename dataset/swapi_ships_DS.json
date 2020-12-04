@@ -1,0 +1,20 @@
+{
+	"name": "swapi_ships_DS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "UserDS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "swapi_ships.json",
+				"folderPath": "api_files",
+				"container": "data"
+			}
+		},
+		"schema": {}
+	}
+}
